@@ -6,8 +6,8 @@ import (
 	"os/exec"
 	"testing"
 
+	"github.com/bingoohuang/gosnmpd"
 	"github.com/sirupsen/logrus"
-	"github.com/slayercat/GoSNMPServer"
 	"github.com/slayercat/gosnmp"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
@@ -16,20 +16,20 @@ import (
 type SnmpServerTestSuite struct {
 	suite.Suite
 
-	Logger GoSNMPServer.ILogger
+	Logger gosnmpd.ILogger
 
-	master  *GoSNMPServer.MasterAgent
-	shandle *GoSNMPServer.SNMPServer
+	master  *gosnmpd.MasterAgent
+	shandle *gosnmpd.SNMPServer
 }
 
 func (suite *SnmpServerTestSuite) SetupTest() {
-	logger := GoSNMPServer.NewDefaultLogger()
-	logger.(*GoSNMPServer.DefaultLogger).Level = logrus.InfoLevel
+	logger := gosnmpd.NewDefaultLogger()
+	logger.(*gosnmpd.DefaultLogger).Level = logrus.InfoLevel
 	suite.Logger = logger
 	SetupLogger(suite.Logger)
-	master := GoSNMPServer.MasterAgent{
+	master := gosnmpd.MasterAgent{
 		Logger: suite.Logger,
-		SecurityConfig: GoSNMPServer.SecurityConfig{
+		SecurityConfig: gosnmpd.SecurityConfig{
 			AuthoritativeEngineBoots: 1,
 			Users: []gosnmp.UsmSecurityParameters{
 				{
@@ -41,7 +41,7 @@ func (suite *SnmpServerTestSuite) SetupTest() {
 				},
 			},
 		},
-		SubAgents: []*GoSNMPServer.SubAgent{
+		SubAgents: []*gosnmpd.SubAgent{
 			{
 				CommunityIDs: []string{"public"},
 				OIDs:         All(),
@@ -49,7 +49,7 @@ func (suite *SnmpServerTestSuite) SetupTest() {
 		},
 	}
 	suite.master = &master
-	suite.shandle = GoSNMPServer.NewSNMPServer(master)
+	suite.shandle = gosnmpd.NewSNMPServer(master)
 	suite.shandle.ListenUDP("udp4", ":0")
 	go func() {
 		err := suite.shandle.ServeForever()

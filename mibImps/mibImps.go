@@ -1,20 +1,20 @@
 package mibImps
 
 import (
-	"github.com/slayercat/GoSNMPServer"
-	"github.com/slayercat/GoSNMPServer/mibImps/dismanEventMib"
-	"github.com/slayercat/GoSNMPServer/mibImps/ifMib"
-	"github.com/slayercat/GoSNMPServer/mibImps/ucdMib"
+	"github.com/bingoohuang/gosnmpd"
+	"github.com/bingoohuang/gosnmpd/mibImps/dismanEventMib"
+	"github.com/bingoohuang/gosnmpd/mibImps/ifMib"
+	"github.com/bingoohuang/gosnmpd/mibImps/ucdMib"
 )
 
 func init() {
-	g_Logger = GoSNMPServer.NewDiscardLogger()
+	g_Logger = gosnmpd.NewDiscardLogger()
 }
 
-var g_Logger GoSNMPServer.ILogger
+var g_Logger gosnmpd.ILogger
 
 // SetupLogger Setups Logger for All sub mibs.
-func SetupLogger(i GoSNMPServer.ILogger) {
+func SetupLogger(i gosnmpd.ILogger) {
 	g_Logger = i
 	dismanEventMib.SetupLogger(i)
 	ifMib.SetupLogger(i)
@@ -24,8 +24,8 @@ func SetupLogger(i GoSNMPServer.ILogger) {
 // All function provides a list of common used OID
 //
 //	includes part of ucdMib, ifMib, and dismanEventMib
-func All() []*GoSNMPServer.PDUValueControlItem {
-	toRet := []*GoSNMPServer.PDUValueControlItem{}
+func All() []*gosnmpd.PDUValueControlItem {
+	toRet := []*gosnmpd.PDUValueControlItem{}
 	toRet = append(toRet, dismanEventMib.All()...)
 	toRet = append(toRet, ifMib.All()...)
 	toRet = append(toRet, ucdMib.All()...)

@@ -1,4 +1,4 @@
-module github.com/slayercat/GoSNMPServer
+module github.com/bingoohuang/gosnmpd
 
 go 1.19
 

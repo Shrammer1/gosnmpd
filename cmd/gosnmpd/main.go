@@ -4,9 +4,9 @@ import (
 	"os"
 	"strings"
 
+	"github.com/bingoohuang/gosnmpd"
+	"github.com/bingoohuang/gosnmpd/mibImps"
 	"github.com/sirupsen/logrus"
-	"github.com/slayercat/GoSNMPServer"
-	"github.com/slayercat/GoSNMPServer/mibImps"
 	"github.com/slayercat/gosnmp"
 	"github.com/urfave/cli/v2"
 )
@@ -39,18 +39,18 @@ func main() {
 }
 
 func runServer(c *cli.Context) error {
-	logger := GoSNMPServer.NewDefaultLogger()
+	logger := gosnmpd.NewDefaultLogger()
 	switch strings.ToLower(c.String("logLevel")) {
 	case "fatal":
-		logger.(*GoSNMPServer.DefaultLogger).Level = logrus.FatalLevel
+		logger.(*gosnmpd.DefaultLogger).Level = logrus.FatalLevel
 	case "error":
-		logger.(*GoSNMPServer.DefaultLogger).Level = logrus.ErrorLevel
+		logger.(*gosnmpd.DefaultLogger).Level = logrus.ErrorLevel
 	case "info":
-		logger.(*GoSNMPServer.DefaultLogger).Level = logrus.InfoLevel
+		logger.(*gosnmpd.DefaultLogger).Level = logrus.InfoLevel
 	case "debug":
-		logger.(*GoSNMPServer.DefaultLogger).Level = logrus.DebugLevel
+		logger.(*gosnmpd.DefaultLogger).Level = logrus.DebugLevel
 	case "trace":
-		logger.(*GoSNMPServer.DefaultLogger).Level = logrus.TraceLevel
+		logger.(*gosnmpd.DefaultLogger).Level = logrus.TraceLevel
 	}
 	mibImps.SetupLogger(logger)
 
@@ -70,13 +70,13 @@ func runServer(c *cli.Context) error {
 		PrivacyPassphrase:        privacyPassphrase,
 	}
 
-	master := GoSNMPServer.MasterAgent{
+	master := gosnmpd.MasterAgent{
 		Logger: logger,
-		SecurityConfig: GoSNMPServer.SecurityConfig{
+		SecurityConfig: gosnmpd.SecurityConfig{
 			AuthoritativeEngineBoots: 1,
 			Users:                    []gosnmp.UsmSecurityParameters{users},
 		},
-		SubAgents: []*GoSNMPServer.SubAgent{
+		SubAgents: []*gosnmpd.SubAgent{
 			{
 				CommunityIDs: []string{c.String("community")},
 				OIDs:         mibImps.All(),
@@ -94,7 +94,7 @@ func runServer(c *cli.Context) error {
 			val.PrivacyPassphrase,
 		)
 	}
-	server := GoSNMPServer.NewSNMPServer(master)
+	server := gosnmpd.NewSNMPServer(master)
 	err := server.ListenUDP("udp", c.String("bindTo"))
 	if err != nil {
 		logger.Errorf("Error in listen: %+v", err)

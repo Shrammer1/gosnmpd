@@ -5,28 +5,29 @@ GetNext, GetBulk, Walk, BulkWalk, Set and Traps. It supports IPv4 and
 IPv6, using __SNMPv2c__ or __SNMPv3__. Builds are tested against
 linux/amd64 and linux/386.
 
-TL;DR
------
+## TL;DR
+
 Build your own SNMP Server, try this:
+
 ```shell
-go install github.com/slayercat/GoSNMPServer/cmd/gosnmpserver
-$(go env GOPATH)/bin/gosnmpserver run-server
-snmpwalk -v 3 -l authPriv  -n public -u testuser   -a md5 -A testauth -x des -X testpriv 127.0.0.1:1161 1
+$ go install github.com/bingoohuang/gosnmpd/cmd/gosnmpd@latest
+$ gosnmpserver run
+$ snmpwalk -v 3 -l authNoPriv -n public -u testuser -a md5 -A testauth 127.0.0.1:1161 1
 ```
 
-Quick Start
------
-```golang
-import "github.com/slayercat/gosnmp"
-import "github.com/slayercat/GoSNMPServer"
-import "github.com/slayercat/GoSNMPServer/mibImps"
+```shell
+$ gosnmpd run --v3PrivacyPassphrase testpriv
+$ snmpwalk -v 3 -l authPriv  -n public -u testuser -a md5 -A testauth -x des -X testpriv 127.0.0.1:1161 1
 ```
 
+## Quick Start
+ 
+
 ```golang
 
-master := GoSNMPServer.MasterAgent{
-    Logger: GoSNMPServer.NewDefaultLogger(),
-    SecurityConfig: GoSNMPServer.SecurityConfig{
+master := gosnmpd.MasterAgent{
+    Logger: gosnmpd.NewDefaultLogger(),
+    SecurityConfig: gosnmpd.SecurityConfig{
         AuthoritativeEngineBoots: 1,
         Users: []gosnmp.UsmSecurityParameters{
             {
@@ -38,14 +39,14 @@ master := GoSNMPServer.MasterAgent{
             },
         },
     },
-    SubAgents: []*GoSNMPServer.SubAgent{
+    SubAgents: []*gosnmpd.SubAgent{
         {
             CommunityIDs: []string{c.String("community")},
             OIDs:         mibImps.All(),
         },
     },
 }
-server := GoSNMPServer.NewSNMPServer(master)
+server := gosnmpd.NewSNMPServer(master)
 err := server.ListenUDP("udp", "127.0.0.1:1161")
 if err != nil {
     logger.Errorf("Error in listen: %+v", err)
@@ -53,21 +54,22 @@ if err != nil {
 server.ServeForever()
 ```
 
+## Serve your own oids
 
-Serve your own oids
------
-This library provides some common oid for use. See [mibImps](https://github.com/slayercat/GoSNMPServer/tree/master/mibImps) for code, See [![GoDoc](https://godoc.org/github.com/slayercat/GoSNMPServe/mibImpsr?status.png)](https://godoc.org/github.com/slayercat/GoSNMPServer/mibImps) here.
+This library provides some common oid for use. See [mibImps](https://github.com/bingoohuang/gosnmpd/tree/master/mibImps)
+for code
 
+Append `gosnmpd.PDUValueControlItem` to your SubAgent OIDS:
 
-Append `GoSNMPServer.PDUValueControlItem` to your SubAgent OIDS:
 ```golang
 {
     OID:      fmt.Sprintf("1.3.6.1.2.1.2.2.1.1.%d", ifIndex),
     Type:     gosnmp.Integer,
-    OnGet:    func() (value interface{}, err error) { return GoSNMPServer.Asn1IntegerWrap(ifIndex), nil },
+    OnGet:    func() (value interface{}, err error) { return gosnmpd.Asn1IntegerWrap(ifIndex), nil },
     Document: "ifIndex",
 },
 ```
+
 Supports Types:  See RFC-2578 FOR SMI
 - Integer
 - OctetString
@@ -81,10 +83,10 @@ Supports Types:  See RFC-2578 FOR SMI
 - OpaqueFloat
 - OpaqueDouble
 
-Could use wrap function for detect type error. See `GoSNMPServer.Asn1IntegerWrap` / `GoSNMPServer.Asn1IntegerUnwrap` and so on.
+Could use wrap function for detect type error. See `gosnmpd.Asn1IntegerWrap` / `gosnmpd.Asn1IntegerUnwrap` and so on.
 
-Thanks
------
+## Thanks
+
 This library is based on **[soniah/gosnmp](https://github.com/soniah/gosnmp)** for encoder / decoders. (made a [fork](https://github.com/slayercat/gosnmp) for maintenance)
 
 

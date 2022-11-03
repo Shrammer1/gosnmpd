@@ -3,26 +3,26 @@ package ucdMib
 import (
 	"fmt"
 
+	"github.com/bingoohuang/gosnmpd"
 	"github.com/shirou/gopsutil/load"
-	"github.com/slayercat/GoSNMPServer"
 	"github.com/slayercat/gosnmp"
 )
 
 // SystemLoadOIDs Returns a list of system Load.
 //
 //	see http://www.net-snmp.org/docs/mibs/ucdavis.html#DisplayString
-func SystemLoadOIDs() []*GoSNMPServer.PDUValueControlItem {
-	return []*GoSNMPServer.PDUValueControlItem{
+func SystemLoadOIDs() []*gosnmpd.PDUValueControlItem {
+	return []*gosnmpd.PDUValueControlItem{
 		{
 			OID:      "1.3.6.1.4.1.2021.10.1.1.1",
 			Type:     gosnmp.Integer,
-			OnGet:    func() (value interface{}, err error) { return GoSNMPServer.Asn1IntegerWrap(1), nil },
+			OnGet:    func() (value interface{}, err error) { return gosnmpd.Asn1IntegerWrap(1), nil },
 			Document: "laIndex",
 		},
 		{
 			OID:      "1.3.6.1.4.1.2021.10.1.2.1",
 			Type:     gosnmp.OctetString,
-			OnGet:    func() (value interface{}, err error) { return GoSNMPServer.Asn1OctetStringWrap("Load-1"), nil },
+			OnGet:    func() (value interface{}, err error) { return gosnmpd.Asn1OctetStringWrap("Load-1"), nil },
 			Document: "laNames",
 		},
 		{
@@ -32,7 +32,7 @@ func SystemLoadOIDs() []*GoSNMPServer.PDUValueControlItem {
 				if val, err := load.Avg(); err != nil {
 					return nil, err
 				} else {
-					return GoSNMPServer.Asn1OctetStringWrap(fmt.Sprintf("%v", val.Load1)), nil
+					return gosnmpd.Asn1OctetStringWrap(fmt.Sprintf("%v", val.Load1)), nil
 				}
 			},
 			Document: "laLoad(float->OctetString)",
@@ -44,7 +44,7 @@ func SystemLoadOIDs() []*GoSNMPServer.PDUValueControlItem {
 				if val, err := load.Avg(); err != nil {
 					return nil, err
 				} else {
-					return GoSNMPServer.Asn1IntegerWrap(int(val.Load1)), nil
+					return gosnmpd.Asn1IntegerWrap(int(val.Load1)), nil
 				}
 			},
 			Document: "laLoadInt",
@@ -53,13 +53,13 @@ func SystemLoadOIDs() []*GoSNMPServer.PDUValueControlItem {
 		{
 			OID:      "1.3.6.1.4.1.2021.10.1.1.2",
 			Type:     gosnmp.Integer,
-			OnGet:    func() (value interface{}, err error) { return GoSNMPServer.Asn1IntegerWrap(2), nil },
+			OnGet:    func() (value interface{}, err error) { return gosnmpd.Asn1IntegerWrap(2), nil },
 			Document: "laIndex",
 		},
 		{
 			OID:      "1.3.6.1.4.1.2021.10.1.2.2",
 			Type:     gosnmp.OctetString,
-			OnGet:    func() (value interface{}, err error) { return GoSNMPServer.Asn1OctetStringWrap("Load-5"), nil },
+			OnGet:    func() (value interface{}, err error) { return gosnmpd.Asn1OctetStringWrap("Load-5"), nil },
 			Document: "laNames",
 		},
 		{
@@ -69,7 +69,7 @@ func SystemLoadOIDs() []*GoSNMPServer.PDUValueControlItem {
 				if val, err := load.Avg(); err != nil {
 					return nil, err
 				} else {
-					return GoSNMPServer.Asn1OctetStringWrap(fmt.Sprintf("%v", val.Load5)), nil
+					return gosnmpd.Asn1OctetStringWrap(fmt.Sprintf("%v", val.Load5)), nil
 				}
 			},
 			Document: "laLoad(float->OctetString)",
@@ -81,7 +81,7 @@ func SystemLoadOIDs() []*GoSNMPServer.PDUValueControlItem {
 				if val, err := load.Avg(); err != nil {
 					return nil, err
 				} else {
-					return GoSNMPServer.Asn1IntegerWrap(int(val.Load5)), nil
+					return gosnmpd.Asn1IntegerWrap(int(val.Load5)), nil
 				}
 			},
 			Document: "laLoadInt",
@@ -90,13 +90,13 @@ func SystemLoadOIDs() []*GoSNMPServer.PDUValueControlItem {
 		{
 			OID:      "1.3.6.1.4.1.2021.10.1.1.3",
 			Type:     gosnmp.Integer,
-			OnGet:    func() (value interface{}, err error) { return GoSNMPServer.Asn1IntegerWrap(3), nil },
+			OnGet:    func() (value interface{}, err error) { return gosnmpd.Asn1IntegerWrap(3), nil },
 			Document: "laIndex",
 		},
 		{
 			OID:      "1.3.6.1.4.1.2021.10.1.2.3",
 			Type:     gosnmp.OctetString,
-			OnGet:    func() (value interface{}, err error) { return GoSNMPServer.Asn1OctetStringWrap("Load-15"), nil },
+			OnGet:    func() (value interface{}, err error) { return gosnmpd.Asn1OctetStringWrap("Load-15"), nil },
 			Document: "laNames",
 		},
 		{
@@ -106,7 +106,7 @@ func SystemLoadOIDs() []*GoSNMPServer.PDUValueControlItem {
 				if val, err := load.Avg(); err != nil {
 					return nil, err
 				} else {
-					return GoSNMPServer.Asn1OctetStringWrap(fmt.Sprintf("%v", val.Load15)), nil
+					return gosnmpd.Asn1OctetStringWrap(fmt.Sprintf("%v", val.Load15)), nil
 				}
 			},
 			Document: "laLoad(float->OctetString)",
@@ -118,7 +118,7 @@ func SystemLoadOIDs() []*GoSNMPServer.PDUValueControlItem {
 				if val, err := load.Avg(); err != nil {
 					return nil, err
 				} else {
-					return GoSNMPServer.Asn1IntegerWrap(int(val.Load15)), nil
+					return gosnmpd.Asn1IntegerWrap(int(val.Load15)), nil
 				}
 			},
 			Document: "laLoadInt",

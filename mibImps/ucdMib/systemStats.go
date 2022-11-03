@@ -1,28 +1,28 @@
 package ucdMib
 
 import (
+	"github.com/bingoohuang/gosnmpd"
 	"github.com/prometheus/procfs"
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/disk"
-	"github.com/slayercat/GoSNMPServer"
 	"github.com/slayercat/gosnmp"
 )
 
 // SystemStatsOIDs Returns a list of memory operation.
 //
 //	see http://www.net-snmp.org/docs/mibs/ucdavis.html#DisplayString
-func SystemStatsOIDs() []*GoSNMPServer.PDUValueControlItem {
-	toRet := []*GoSNMPServer.PDUValueControlItem{
+func SystemStatsOIDs() []*gosnmpd.PDUValueControlItem {
+	toRet := []*gosnmpd.PDUValueControlItem{
 		{
 			OID:      "1.3.6.1.4.1.2021.11.1",
 			Type:     gosnmp.Integer,
-			OnGet:    func() (value interface{}, err error) { return GoSNMPServer.Asn1IntegerWrap(0), nil },
+			OnGet:    func() (value interface{}, err error) { return gosnmpd.Asn1IntegerWrap(0), nil },
 			Document: "ssIndex",
 		},
 		{
 			OID:      "1.3.6.1.4.1.2021.11.2",
 			Type:     gosnmp.OctetString,
-			OnGet:    func() (value interface{}, err error) { return GoSNMPServer.Asn1OctetStringWrap("systemStats"), nil },
+			OnGet:    func() (value interface{}, err error) { return gosnmpd.Asn1OctetStringWrap("systemStats"), nil },
 			Document: "ssErrorName",
 		},
 		{
@@ -30,7 +30,7 @@ func SystemStatsOIDs() []*GoSNMPServer.PDUValueControlItem {
 			Type: gosnmp.Counter32,
 			OnGet: func() (value interface{}, err error) {
 				if val, err := cpu.Times(false); err == nil {
-					return GoSNMPServer.Asn1Counter32Wrap(uint(val[0].User)), nil
+					return gosnmpd.Asn1Counter32Wrap(uint(val[0].User)), nil
 				} else {
 					return nil, err
 				}
@@ -42,7 +42,7 @@ func SystemStatsOIDs() []*GoSNMPServer.PDUValueControlItem {
 			Type: gosnmp.Counter32,
 			OnGet: func() (value interface{}, err error) {
 				if val, err := cpu.Times(false); err == nil {
-					return GoSNMPServer.Asn1Counter32Wrap(uint(val[0].Nice)), nil
+					return gosnmpd.Asn1Counter32Wrap(uint(val[0].Nice)), nil
 				} else {
 					return nil, err
 				}
@@ -54,7 +54,7 @@ func SystemStatsOIDs() []*GoSNMPServer.PDUValueControlItem {
 			Type: gosnmp.Counter32,
 			OnGet: func() (value interface{}, err error) {
 				if val, err := cpu.Times(false); err == nil {
-					return GoSNMPServer.Asn1Counter32Wrap(uint(val[0].System)), nil
+					return gosnmpd.Asn1Counter32Wrap(uint(val[0].System)), nil
 				} else {
 					return nil, err
 				}
@@ -66,7 +66,7 @@ func SystemStatsOIDs() []*GoSNMPServer.PDUValueControlItem {
 			Type: gosnmp.Counter32,
 			OnGet: func() (value interface{}, err error) {
 				if val, err := cpu.Times(false); err == nil {
-					return GoSNMPServer.Asn1Counter32Wrap(uint(val[0].Idle)), nil
+					return gosnmpd.Asn1Counter32Wrap(uint(val[0].Idle)), nil
 				} else {
 					return nil, err
 				}
@@ -78,7 +78,7 @@ func SystemStatsOIDs() []*GoSNMPServer.PDUValueControlItem {
 			Type: gosnmp.Counter32,
 			OnGet: func() (value interface{}, err error) {
 				if val, err := cpu.Times(false); err == nil {
-					return GoSNMPServer.Asn1Counter32Wrap(uint(val[0].Iowait)), nil
+					return gosnmpd.Asn1Counter32Wrap(uint(val[0].Iowait)), nil
 				} else {
 					return nil, err
 				}
@@ -90,7 +90,7 @@ func SystemStatsOIDs() []*GoSNMPServer.PDUValueControlItem {
 			Type: gosnmp.Counter32,
 			OnGet: func() (value interface{}, err error) {
 				if val, err := cpu.Times(false); err == nil {
-					return GoSNMPServer.Asn1Counter32Wrap(uint(val[0].Irq)), nil
+					return gosnmpd.Asn1Counter32Wrap(uint(val[0].Irq)), nil
 				} else {
 					return nil, err
 				}
@@ -106,7 +106,7 @@ func SystemStatsOIDs() []*GoSNMPServer.PDUValueControlItem {
 					for _, value := range val {
 						sum += value.WriteCount
 					}
-					return GoSNMPServer.Asn1Counter32Wrap(uint(sum)), nil
+					return gosnmpd.Asn1Counter32Wrap(uint(sum)), nil
 				} else {
 					return nil, err
 				}
@@ -122,7 +122,7 @@ func SystemStatsOIDs() []*GoSNMPServer.PDUValueControlItem {
 					for _, value := range val {
 						sum += value.ReadCount
 					}
-					return GoSNMPServer.Asn1Counter32Wrap(uint(sum)), nil
+					return gosnmpd.Asn1Counter32Wrap(uint(sum)), nil
 				} else {
 					return nil, err
 				}
@@ -134,7 +134,7 @@ func SystemStatsOIDs() []*GoSNMPServer.PDUValueControlItem {
 			Type: gosnmp.Counter32,
 			OnGet: func() (value interface{}, err error) {
 				if val, err := cpu.Times(false); err == nil {
-					return GoSNMPServer.Asn1Counter32Wrap(uint(val[0].Softirq)), nil
+					return gosnmpd.Asn1Counter32Wrap(uint(val[0].Softirq)), nil
 				} else {
 					return nil, err
 				}
@@ -146,7 +146,7 @@ func SystemStatsOIDs() []*GoSNMPServer.PDUValueControlItem {
 			Type: gosnmp.Counter32,
 			OnGet: func() (value interface{}, err error) {
 				if val, err := cpu.Times(false); err == nil {
-					return GoSNMPServer.Asn1Counter32Wrap(uint(val[0].Steal)), nil
+					return gosnmpd.Asn1Counter32Wrap(uint(val[0].Steal)), nil
 				} else {
 					return nil, err
 				}
@@ -158,7 +158,7 @@ func SystemStatsOIDs() []*GoSNMPServer.PDUValueControlItem {
 			Type: gosnmp.Counter32,
 			OnGet: func() (value interface{}, err error) {
 				if val, err := cpu.Times(false); err == nil {
-					return GoSNMPServer.Asn1Counter32Wrap(uint(val[0].Guest)), nil
+					return gosnmpd.Asn1Counter32Wrap(uint(val[0].Guest)), nil
 				} else {
 					return nil, err
 				}
@@ -171,18 +171,18 @@ func SystemStatsOIDs() []*GoSNMPServer.PDUValueControlItem {
 	return toRet
 }
 
-func appendLinuxPlatformSystemStats(io *[]*GoSNMPServer.PDUValueControlItem) {
+func appendLinuxPlatformSystemStats(io *[]*gosnmpd.PDUValueControlItem) {
 	procfsInt, err := procfs.NewDefaultFS()
 	if err != nil {
 		return
 	}
-	toAppend := []*GoSNMPServer.PDUValueControlItem{
+	toAppend := []*gosnmpd.PDUValueControlItem{
 		{
 			OID:  "1.3.6.1.4.1.2021.11.59",
 			Type: gosnmp.Counter32,
 			OnGet: func() (value interface{}, err error) {
 				if val, err := procfsInt.NewStat(); err == nil {
-					return GoSNMPServer.Asn1Counter32Wrap(uint(val.IRQTotal)), nil
+					return gosnmpd.Asn1Counter32Wrap(uint(val.IRQTotal)), nil
 				} else {
 					return nil, err
 				}
@@ -194,7 +194,7 @@ func appendLinuxPlatformSystemStats(io *[]*GoSNMPServer.PDUValueControlItem) {
 			Type: gosnmp.Counter32,
 			OnGet: func() (value interface{}, err error) {
 				if val, err := procfsInt.NewStat(); err == nil {
-					return GoSNMPServer.Asn1Counter32Wrap(uint(val.ContextSwitches)), nil
+					return gosnmpd.Asn1Counter32Wrap(uint(val.ContextSwitches)), nil
 				} else {
 					return nil, err
 				}

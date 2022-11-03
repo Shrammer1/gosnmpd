@@ -1,19 +1,19 @@
 package dismanEventMib
 
 import (
+	"github.com/bingoohuang/gosnmpd"
 	"github.com/shirou/gopsutil/host"
-	"github.com/slayercat/GoSNMPServer"
 	"github.com/slayercat/gosnmp"
 )
 
 func init() {
-	g_Logger = GoSNMPServer.NewDiscardLogger()
+	g_Logger = gosnmpd.NewDiscardLogger()
 }
 
-var g_Logger GoSNMPServer.ILogger
+var g_Logger gosnmpd.ILogger
 
 // SetupLogger Setups Logger for this mib
-func SetupLogger(i GoSNMPServer.ILogger) {
+func SetupLogger(i gosnmpd.ILogger) {
 	g_Logger = i
 }
 
@@ -21,8 +21,8 @@ func SetupLogger(i GoSNMPServer.ILogger) {
 //
 //	see http://www.oid-info.com/get/1.3.6.1.2.1.1.3.0
 //	    http://www.net-snmp.org/docs/mibs/dismanEventMIB.html
-func DismanEventOids() []*GoSNMPServer.PDUValueControlItem {
-	return []*GoSNMPServer.PDUValueControlItem{
+func DismanEventOids() []*gosnmpd.PDUValueControlItem {
+	return []*gosnmpd.PDUValueControlItem{
 		{
 			OID:  "1.3.6.1.2.1.1.3.0",
 			Type: gosnmp.TimeTicks,
@@ -30,7 +30,7 @@ func DismanEventOids() []*GoSNMPServer.PDUValueControlItem {
 				if val, err := host.Uptime(); err != nil {
 					return nil, err
 				} else {
-					return GoSNMPServer.Asn1TimeTicksWrap(uint32(val)), nil
+					return gosnmpd.Asn1TimeTicksWrap(uint32(val)), nil
 				}
 			},
 			Document: "Uptime",
@@ -39,6 +39,6 @@ func DismanEventOids() []*GoSNMPServer.PDUValueControlItem {
 }
 
 // All function provides a list of common used OID in DISMAN-EVENT-MIB
-func All() []*GoSNMPServer.PDUValueControlItem {
+func All() []*gosnmpd.PDUValueControlItem {
 	return DismanEventOids()
 }

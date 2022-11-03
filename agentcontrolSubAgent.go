@@ -1,4 +1,4 @@
-package GoSNMPServer
+package gosnmpd
 
 import (
 	"fmt"

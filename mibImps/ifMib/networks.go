@@ -7,17 +7,17 @@ import (
 	"runtime"
 	"strings"
 
+	"github.com/bingoohuang/gosnmpd"
 	"github.com/pkg/errors"
 	"github.com/shirou/gopsutil/net"
-	"github.com/slayercat/GoSNMPServer"
 	"github.com/slayercat/gosnmp"
 )
 
 // NetworkOIDs Returns a list of network data.
 //
 //	see http://www.net-snmp.org/docs/mibs/interfaces.html
-func NetworkOIDs() []*GoSNMPServer.PDUValueControlItem {
-	toRet := []*GoSNMPServer.PDUValueControlItem{}
+func NetworkOIDs() []*gosnmpd.PDUValueControlItem {
+	toRet := []*gosnmpd.PDUValueControlItem{}
 	valInterfaces, err := net.Interfaces()
 	if err != nil {
 		g_Logger.Errorf("network ifs read failed. err=%v", err)
@@ -36,17 +36,17 @@ func NetworkOIDs() []*GoSNMPServer.PDUValueControlItem {
 		targetIf := netifs[val.Name]
 		ifName := val.Name
 		ifHWAddr := targetIf.HardwareAddr
-		currentIf := []*GoSNMPServer.PDUValueControlItem{
+		currentIf := []*gosnmpd.PDUValueControlItem{
 			{
 				OID:      fmt.Sprintf("1.3.6.1.2.1.2.2.1.1.%d", ifIndex),
 				Type:     gosnmp.Integer,
-				OnGet:    func() (value interface{}, err error) { return GoSNMPServer.Asn1IntegerWrap(ifIndex), nil },
+				OnGet:    func() (value interface{}, err error) { return gosnmpd.Asn1IntegerWrap(ifIndex), nil },
 				Document: "ifIndex",
 			},
 			{
 				OID:      fmt.Sprintf("1.3.6.1.2.1.2.2.1.2.%d", ifIndex),
 				Type:     gosnmp.OctetString,
-				OnGet:    func() (value interface{}, err error) { return GoSNMPServer.Asn1OctetStringWrap(ifName), nil },
+				OnGet:    func() (value interface{}, err error) { return gosnmpd.Asn1OctetStringWrap(ifName), nil },
 				Document: "ifDescr",
 			},
 			{
@@ -55,7 +55,7 @@ func NetworkOIDs() []*GoSNMPServer.PDUValueControlItem {
 				OnGet: func() (value interface{}, err error) {
 					gigabitEthernet := 117 // see  http://www.net-snmp.org/docs/mibs/interfaces.html#IANAifType
 					// XXX: Let's assume all item is gigabitEthernet. /sys/class/net/eth0/type
-					return GoSNMPServer.Asn1IntegerWrap(gigabitEthernet), nil
+					return gosnmpd.Asn1IntegerWrap(gigabitEthernet), nil
 				},
 				Document: "ifType",
 			},
@@ -68,7 +68,7 @@ func NetworkOIDs() []*GoSNMPServer.PDUValueControlItem {
 					if err != nil {
 						return nil, err
 					}
-					return GoSNMPServer.Asn1OctetStringWrap(string(decoded)), nil
+					return gosnmpd.Asn1OctetStringWrap(string(decoded)), nil
 				},
 				Document: "ifPhysAddress",
 			},
@@ -80,7 +80,7 @@ func NetworkOIDs() []*GoSNMPServer.PDUValueControlItem {
 					if err != nil {
 						return nil, err
 					}
-					return GoSNMPServer.Asn1Counter32Wrap(uint(vid.BytesRecv)), nil
+					return gosnmpd.Asn1Counter32Wrap(uint(vid.BytesRecv)), nil
 				},
 				Document: "ifInOctets",
 			},
@@ -92,7 +92,7 @@ func NetworkOIDs() []*GoSNMPServer.PDUValueControlItem {
 					if err != nil {
 						return nil, err
 					}
-					return GoSNMPServer.Asn1Counter32Wrap(uint(vid.PacketsRecv)), nil
+					return gosnmpd.Asn1Counter32Wrap(uint(vid.PacketsRecv)), nil
 				},
 				Document: "ifInUcastPkts",
 			},
@@ -104,7 +104,7 @@ func NetworkOIDs() []*GoSNMPServer.PDUValueControlItem {
 					if err != nil {
 						return nil, err
 					}
-					return GoSNMPServer.Asn1Counter32Wrap(uint(vid.Dropin)), nil
+					return gosnmpd.Asn1Counter32Wrap(uint(vid.Dropin)), nil
 				},
 				Document: "ifInDiscards",
 			},
@@ -116,7 +116,7 @@ func NetworkOIDs() []*GoSNMPServer.PDUValueControlItem {
 					if err != nil {
 						return nil, err
 					}
-					return GoSNMPServer.Asn1Counter32Wrap(uint(vid.Errin)), nil
+					return gosnmpd.Asn1Counter32Wrap(uint(vid.Errin)), nil
 				},
 				Document: "ifInErrors",
 			},
@@ -128,7 +128,7 @@ func NetworkOIDs() []*GoSNMPServer.PDUValueControlItem {
 					if err != nil {
 						return nil, err
 					}
-					return GoSNMPServer.Asn1Counter32Wrap(uint(vid.BytesSent)), nil
+					return gosnmpd.Asn1Counter32Wrap(uint(vid.BytesSent)), nil
 				},
 				Document: "ifOutOctets",
 			},
@@ -140,7 +140,7 @@ func NetworkOIDs() []*GoSNMPServer.PDUValueControlItem {
 					if err != nil {
 						return nil, err
 					}
-					return GoSNMPServer.Asn1Counter32Wrap(uint(vid.PacketsSent)), nil
+					return gosnmpd.Asn1Counter32Wrap(uint(vid.PacketsSent)), nil
 				},
 				Document: "ifOutUcastPkts",
 			},
@@ -152,7 +152,7 @@ func NetworkOIDs() []*GoSNMPServer.PDUValueControlItem {
 					if err != nil {
 						return nil, err
 					}
-					return GoSNMPServer.Asn1Counter32Wrap(uint(vid.Dropout)), nil
+					return gosnmpd.Asn1Counter32Wrap(uint(vid.Dropout)), nil
 				},
 				Document: "ifOutDisCards",
 			},
@@ -164,7 +164,7 @@ func NetworkOIDs() []*GoSNMPServer.PDUValueControlItem {
 					if err != nil {
 						return nil, err
 					}
-					return GoSNMPServer.Asn1Counter32Wrap(uint(vid.Errout)), nil
+					return gosnmpd.Asn1Counter32Wrap(uint(vid.Errout)), nil
 				},
 				Document: "ifOutErrors",
 			},
@@ -191,11 +191,11 @@ func getNetworkStatsByName(name string, hintid int) (net.IOCountersStat, error) 
 	return net.IOCountersStat{}, errors.Errorf("Not Find eth %v", name)
 }
 
-func appendLinuxPlatformNetworks(io *[]*GoSNMPServer.PDUValueControlItem, ifName string, ifIndex int) {
+func appendLinuxPlatformNetworks(io *[]*gosnmpd.PDUValueControlItem, ifName string, ifIndex int) {
 	if runtime.GOOS != "linux" {
 		return
 	}
-	toAppend := []*GoSNMPServer.PDUValueControlItem{
+	toAppend := []*gosnmpd.PDUValueControlItem{
 		{
 			OID:  fmt.Sprintf("1.3.6.1.2.1.2.2.1.7.%d", ifIndex),
 			Type: gosnmp.Integer,
@@ -204,9 +204,9 @@ func appendLinuxPlatformNetworks(io *[]*GoSNMPServer.PDUValueControlItem, ifName
 				adminstatus_down := 2
 				_, err = ioutil.ReadFile(fmt.Sprintf("/sys/class/net/%s/carrier", ifName))
 				if err != nil {
-					return GoSNMPServer.Asn1IntegerWrap(int(adminstatus_down)), nil
+					return gosnmpd.Asn1IntegerWrap(int(adminstatus_down)), nil
 				}
-				return GoSNMPServer.Asn1IntegerWrap(adminstatus_up), nil
+				return gosnmpd.Asn1IntegerWrap(adminstatus_up), nil
 			},
 			Document: "ifAdminStatus",
 		},
@@ -229,10 +229,10 @@ func appendLinuxPlatformNetworks(io *[]*GoSNMPServer.PDUValueControlItem, ifName
 				}
 				bTString := string(bTs)
 				if val, ok := str_num[bTString]; ok {
-					return GoSNMPServer.Asn1IntegerWrap(int(val)), nil
+					return gosnmpd.Asn1IntegerWrap(int(val)), nil
 				} else {
 					g_Logger.Errorf("get ifOperStatus: unknown operstate %v", bTString)
-					return GoSNMPServer.Asn1IntegerWrap(int(0)), nil
+					return gosnmpd.Asn1IntegerWrap(int(0)), nil
 				}
 			},
 			Document: "ifOperStatus",
