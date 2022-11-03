@@ -1,9 +1,7 @@
 # gosnmpd
 
-GoSNMPServer is an SNMP server library fully written in Go. It provides Server Get,
-GetNext, GetBulk, Walk, BulkWalk, Set and Traps. It supports IPv4 and
-IPv6, using __SNMPv2c__ or __SNMPv3__. Builds are tested against
-linux/amd64 and linux/386.
+gosnmpd is an SNMP server library fully written in Go. It provides Server Get, GetNext, GetBulk, Walk, BulkWalk, Set and
+Traps. It supports IPv4 and IPv6, using __SNMPv2c__ or __SNMPv3__. Builds are tested against linux/amd64 and linux/386.
 
 ## TL;DR
 
@@ -11,17 +9,16 @@ Build your own SNMP Server, try this:
 
 ```shell
 $ go install github.com/bingoohuang/gosnmpd/cmd/gosnmpd@latest
-$ gosnmpserver run
+$ gosnmpd
 $ snmpwalk -v 3 -l authNoPriv -n public -u testuser -a md5 -A testauth 127.0.0.1:1161 1
 ```
 
 ```shell
-$ gosnmpd run --v3PrivacyPassphrase testpriv
+$ gosnmpd -x des -X testpriv
 $ snmpwalk -v 3 -l authPriv  -n public -u testuser -a md5 -A testauth -x des -X testpriv 127.0.0.1:1161 1
 ```
 
 ## Quick Start
- 
 
 ```golang
 
@@ -89,10 +86,15 @@ Could use wrap function for detect type error. See `gosnmpd.Asn1IntegerWrap` / `
 
 This library is based on **[soniah/gosnmp](https://github.com/soniah/gosnmp)** for encoder / decoders. (made a [fork](https://github.com/slayercat/gosnmp) for maintenance)
 
-
 ## logs
 
 ```log
+$ gosnmpd
+$ snmpwalk -v 3 -l authNoPriv  -n public -u testuser -a md5 -A testauth 127.0.0.1:1161 1
+```
+
+```log
+$ gosnmpd -x des -X testpriv
 $ snmpwalk -v 3 -l authPriv  -n public -u testuser -a md5 -A testauth -x des -X testpriv 127.0.0.1:1161 1
 DISMAN-EVENT-MIB::sysUpTimeInstance = Timeticks: (4424282) 12:17:22.82
 IF-MIB::ifIndex.0 = INTEGER: 1

@@ -38,7 +38,7 @@ func DiskUsageOIDs(showTheseNameOnly ...NameOverride) []*gosnmpd.PDUValueControl
 			})
 		}
 	}
-	toRet := []*gosnmpd.PDUValueControlItem{}
+	var toRet []*gosnmpd.PDUValueControlItem
 	for id, each := range showTheseNameOnly {
 		cid := id + 1
 		currentDiskItem := each

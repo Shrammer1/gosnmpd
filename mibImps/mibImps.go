@@ -7,15 +7,8 @@ import (
 	"github.com/bingoohuang/gosnmpd/mibImps/ucdMib"
 )
 
-func init() {
-	g_Logger = gosnmpd.NewDiscardLogger()
-}
-
-var g_Logger gosnmpd.ILogger
-
 // SetupLogger Setups Logger for All sub mibs.
 func SetupLogger(i gosnmpd.ILogger) {
-	g_Logger = i
 	dismanEventMib.SetupLogger(i)
 	ifMib.SetupLogger(i)
 	ucdMib.SetupLogger(i)
@@ -25,7 +18,7 @@ func SetupLogger(i gosnmpd.ILogger) {
 //
 //	includes part of ucdMib, ifMib, and dismanEventMib
 func All() []*gosnmpd.PDUValueControlItem {
-	toRet := []*gosnmpd.PDUValueControlItem{}
+	var toRet []*gosnmpd.PDUValueControlItem
 	toRet = append(toRet, dismanEventMib.All()...)
 	toRet = append(toRet, ifMib.All()...)
 	toRet = append(toRet, ucdMib.All()...)
