@@ -25,7 +25,7 @@ func makeApp() *cli.App {
 					&cli.StringFlag{Name: "bindTo", Value: "127.0.0.1:1161"},
 					&cli.StringFlag{Name: "v3Username", Value: "testuser"},
 					&cli.StringFlag{Name: "v3AuthenticationPassphrase", Value: "testauth"},
-					&cli.StringFlag{Name: "v3PrivacyPassphrase", Value: "testpriv"},
+					&cli.StringFlag{Name: "v3PrivacyPassphrase", Value: ""},
 				},
 				Action: runServer,
 			},
@@ -54,19 +54,27 @@ func runServer(c *cli.Context) error {
 	}
 	mibImps.SetupLogger(logger)
 
+	userName := c.String("v3Username")
+	authenticationPassphrase := c.String("v3AuthenticationPassphrase")
+	privacyPassphrase := c.String("v3PrivacyPassphrase")
+	privacyProtocol := gosnmp.DES
+	if privacyPassphrase == "" {
+		privacyProtocol = gosnmp.NoPriv
+	}
+
+	users := gosnmp.UsmSecurityParameters{
+		UserName:                 userName,
+		AuthenticationProtocol:   gosnmp.MD5,
+		PrivacyProtocol:          privacyProtocol,
+		AuthenticationPassphrase: authenticationPassphrase,
+		PrivacyPassphrase:        privacyPassphrase,
+	}
+
 	master := GoSNMPServer.MasterAgent{
 		Logger: logger,
 		SecurityConfig: GoSNMPServer.SecurityConfig{
 			AuthoritativeEngineBoots: 1,
-			Users: []gosnmp.UsmSecurityParameters{
-				{
-					UserName:                 c.String("v3Username"),
-					AuthenticationProtocol:   gosnmp.MD5,
-					PrivacyProtocol:          gosnmp.DES,
-					AuthenticationPassphrase: c.String("v3AuthenticationPassphrase"),
-					PrivacyPassphrase:        c.String("v3PrivacyPassphrase"),
-				},
-			},
+			Users:                    []gosnmp.UsmSecurityParameters{users},
 		},
 		SubAgents: []*GoSNMPServer.SubAgent{
 			{
