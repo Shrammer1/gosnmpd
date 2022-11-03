@@ -1,10 +1,13 @@
 package GoSNMPServer
 
-import "strings"
-import "fmt"
-import "sort"
-import "github.com/slayercat/gosnmp"
-import "github.com/pkg/errors"
+import (
+	"fmt"
+	"sort"
+	"strings"
+
+	"github.com/pkg/errors"
+	"github.com/slayercat/gosnmp"
+)
 
 type SubAgent struct {
 	// ContextName selects from SNMPV3 ContextName or SNMPV1/V2c community for switch from SubAgent...
@@ -69,6 +72,7 @@ func (t *SubAgent) getPDU(Name string, Type gosnmp.Asn1BER, Value interface{}) g
 		Logger: &SnmpLoggerAdapter{t.Logger},
 	}
 }
+
 func (t *SubAgent) getPDUHelloVariable() gosnmp.SnmpPDU {
 	// Return a variable. Usually for failture login try count.
 	//   1.3.6.1.6.3.15.1.1.4.0 => http://oidref.com/1.3.6.1.6.3.15.1.1.4.0
@@ -113,7 +117,8 @@ func (t *SubAgent) getPDUOctetString(Name, str string) gosnmp.SnmpPDU {
 }
 
 func (t *SubAgent) getForPDUValueControlResult(item *PDUValueControlItem,
-	i *gosnmp.SnmpPacket) (pdu gosnmp.SnmpPDU, errret gosnmp.SNMPError) {
+	i *gosnmp.SnmpPacket,
+) (pdu gosnmp.SnmpPDU, errret gosnmp.SNMPError) {
 	if t.checkPermission(item, i) != PermissionAllowanceAllowed {
 		return t.getPDUNil(item.OID), gosnmp.NoAccess
 	}
@@ -148,7 +153,8 @@ func (t *SubAgent) getForPDUValueControlResult(item *PDUValueControlItem,
 }
 
 func (t *SubAgent) trapForPDUValueControlResult(item *PDUValueControlItem,
-	i *gosnmp.SnmpPacket, varItem gosnmp.SnmpPDU) (pdu gosnmp.SnmpPDU, errret gosnmp.SNMPError) {
+	i *gosnmp.SnmpPacket, varItem gosnmp.SnmpPDU,
+) (pdu gosnmp.SnmpPDU, errret gosnmp.SNMPError) {
 	if t.checkPermission(item, i) != PermissionAllowanceAllowed {
 		return t.getPDUNil(item.OID), gosnmp.NoAccess
 	}
@@ -222,7 +228,6 @@ func (t *SubAgent) serveGetRequest(i *gosnmp.SnmpPacket) (*gosnmp.SnmpPacket, er
 	}
 
 	return &ret, nil
-
 }
 
 func (t *SubAgent) serveTrap(i *gosnmp.SnmpPacket) (*gosnmp.SnmpPacket, error) {
@@ -257,7 +262,6 @@ func (t *SubAgent) serveTrap(i *gosnmp.SnmpPacket) (*gosnmp.SnmpPacket, error) {
 	} else {
 		return nil, nil
 	}
-
 }
 
 func (t *SubAgent) serveGetBulkRequest(i *gosnmp.SnmpPacket) (*gosnmp.SnmpPacket, error) {

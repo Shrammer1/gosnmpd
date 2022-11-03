@@ -12,8 +12,9 @@ import (
 
 type FuncGetAuthoritativeEngineTime func() uint32
 
-//MasterAgent identifys software which runs on managed devices
-//            One server (port) could ONLY have one MasterAgent
+// MasterAgent identifys software which runs on managed devices
+//
+//	One server (port) could ONLY have one MasterAgent
 type MasterAgent struct {
 	SecurityConfig SecurityConfig
 
@@ -61,19 +62,18 @@ type SNMPEngineID struct {
 }
 
 func (t *SNMPEngineID) Marshal() []byte {
-
 	// msgAuthoritativeEngineID: 80004fb8054445534b544f502d4a3732533245343ab63bc8
 	// 1... .... = Engine ID Conformance: RFC3411 (SNMPv3)
 	// Engine Enterprise ID: pysnmp (20408)
 	// Engine ID Format: Octets, administratively assigned (5)
 	// Engine ID Data: 4445534b544f502d4a3732533245343ab63bc8
 
-	var tm = []byte{
+	tm := []byte{
 		0x80, 0x00, 0x4f, 0xb8, 0x05,
 	}
 	toAppend := []byte(t.EngineIDData)
 	maxDefineallowed := 32 - 5
-	if len(toAppend) > maxDefineallowed { //Max 32 bytes
+	if len(toAppend) > maxDefineallowed { // Max 32 bytes
 		toAppend = toAppend[:maxDefineallowed]
 	}
 	tm = append(tm, toAppend...)
@@ -89,7 +89,7 @@ func (t *MasterAgent) syncAndCheck() error {
 	}
 
 	if t.Logger == nil {
-		//Set New NIL Logger
+		// Set New NIL Logger
 		t.Logger = NewDiscardLogger()
 	}
 	if t.SecurityConfig.OnGetAuthoritativeEngineTime == nil {
@@ -142,7 +142,7 @@ func (t *MasterAgent) ResponseForBuffer(i []byte) ([]byte, error) {
 				return t.marshalPkt(val, err)
 			}
 		}
-		//v3 might want for Privacy
+		// v3 might want for Privacy
 		if request.SecurityParameters == nil {
 			return nil, errors.WithMessagef(ErrUnsupportedPacketData, "GoSNMP Returns %v", decodeError)
 		}
@@ -211,7 +211,6 @@ func (t *MasterAgent) getUsmSecurityParametersFromUser(username string) (*gosnmp
 			AuthoritativeEngineBoots: t.SecurityConfig.AuthoritativeEngineBoots,
 			AuthoritativeEngineTime:  t.SecurityConfig.OnGetAuthoritativeEngineTime(),
 		}, nil
-
 	}
 	if val := t.SecurityConfig.FindForUser(username); val != nil {
 		fval := val.Copy().(*gosnmp.UsmSecurityParameters)
@@ -223,7 +222,6 @@ func (t *MasterAgent) getUsmSecurityParametersFromUser(username string) (*gosnmp
 	} else {
 		return nil, errors.WithStack(ErrNoPermission)
 	}
-
 }
 
 func (t *MasterAgent) fillErrorPkt(err error, io *gosnmp.SnmpPacket) error {

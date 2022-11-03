@@ -143,7 +143,7 @@ func (suite *ServerTests) TestErrors() {
 	}
 	shandle := NewSNMPServer(master)
 	shandle.ListenUDP("udp4", ":0")
-	var stopWaitChain = make(chan int)
+	stopWaitChain := make(chan int)
 	go func() {
 		err := shandle.ServeForever()
 		if err != nil {
@@ -152,7 +152,6 @@ func (suite *ServerTests) TestErrors() {
 			suite.Logger.Info("ServeForever Stoped.")
 		}
 		stopWaitChain <- 1
-
 	}()
 	serverAddress := shandle.Address().(*net.UDPAddr)
 	suite.Run("SNMPWalk", func() {
@@ -258,7 +257,7 @@ func (suite *ServerTests) TestGetSetOids() {
 	}
 	shandle := NewSNMPServer(master)
 	shandle.ListenUDP("udp4", ":0")
-	var stopWaitChain = make(chan int)
+	stopWaitChain := make(chan int)
 	go func() {
 		err := shandle.ServeForever()
 		if err != nil {
@@ -267,7 +266,6 @@ func (suite *ServerTests) TestGetSetOids() {
 			suite.Logger.Info("ServeForever Stoped.")
 		}
 		stopWaitChain <- 1
-
 	}()
 
 	serverAddress := shandle.Address().(*net.UDPAddr)
@@ -336,86 +334,101 @@ func (suite *ServerTests) TestGetSetOids() {
 			defer gosnmp.Default.Conn.Close()
 			suite.Run("Counter32", func() {
 				result, err := gosnmp.Default.Set([]gosnmp.SnmpPDU{
-					{Name: ".1.2.3.6",
+					{
+						Name:   ".1.2.3.6",
 						Type:   gosnmp.Counter32,
 						Value:  Asn1Counter32Wrap(123),
 						Logger: gosnmp.Default.Logger,
-					}})
+					},
+				})
 				assert.Equal(suite.T(), nil, err)
 				assert.Equal(suite.T(), gosnmp.SNMPError(0x0), result.Error)
 			})
 			suite.Run("Null", func() {
 				result, err := gosnmp.Default.Set([]gosnmp.SnmpPDU{
-					{Name: ".1.2.3.2",
+					{
+						Name:   ".1.2.3.2",
 						Type:   gosnmp.Null,
 						Value:  nil,
 						Logger: gosnmp.Default.Logger,
-					}})
+					},
+				})
 				assert.Equal(suite.T(), nil, err)
 				assert.Equal(suite.T(), gosnmp.SNMPError(0x0), result.Error)
 			})
 			suite.Run("TimeTicks", func() {
 				result, err := gosnmp.Default.Set([]gosnmp.SnmpPDU{
-					{Name: ".1.2.3.8",
+					{
+						Name:   ".1.2.3.8",
 						Type:   gosnmp.TimeTicks,
 						Value:  Asn1TimeTicksWrap(1238),
 						Logger: gosnmp.Default.Logger,
-					}})
+					},
+				})
 				assert.Equal(suite.T(), nil, err)
 				assert.Equal(suite.T(), gosnmp.SNMPError(0x0), result.Error)
 			})
 			suite.Run("Counter64", func() {
 				result, err := gosnmp.Default.Set([]gosnmp.SnmpPDU{
-					{Name: ".1.2.3.9",
+					{
+						Name:   ".1.2.3.9",
 						Type:   gosnmp.Counter64,
 						Value:  Asn1Counter64Wrap(1239),
 						Logger: gosnmp.Default.Logger,
-					}})
+					},
+				})
 				assert.Equal(suite.T(), nil, err)
 				assert.Equal(suite.T(), gosnmp.SNMPError(0x0), result.Error)
 			})
 			suite.Run("Gauge32", func() {
 				result, err := gosnmp.Default.Set([]gosnmp.SnmpPDU{
-					{Name: ".1.2.3.7",
+					{
+						Name:   ".1.2.3.7",
 						Type:   gosnmp.Gauge32,
 						Value:  Asn1Gauge32Wrap(1239),
 						Logger: gosnmp.Default.Logger,
-					}})
+					},
+				})
 				assert.Equal(suite.T(), nil, err)
 				assert.Equal(suite.T(), gosnmp.SNMPError(0x0), result.Error)
 			})
 			suite.Run("Uinteger32", func() {
 				result, err := gosnmp.Default.Set([]gosnmp.SnmpPDU{
-					{Name: ".1.2.3.10",
+					{
+						Name:   ".1.2.3.10",
 						Type:   gosnmp.Uinteger32,
 						Value:  Asn1Uinteger32Wrap(12310),
 						Logger: gosnmp.Default.Logger,
-					}})
+					},
+				})
 				assert.Equal(suite.T(), nil, err)
 				assert.Equal(suite.T(), gosnmp.SNMPError(0x0), result.Error)
 			})
 			suite.Run("OpaqueFloat", func() {
 				result, err := gosnmp.Default.Set([]gosnmp.SnmpPDU{
-					{Name: ".1.2.3.11",
+					{
+						Name:   ".1.2.3.11",
 						Type:   gosnmp.OpaqueFloat,
 						Value:  Asn1OpaqueFloatWrap(123.11),
 						Logger: gosnmp.Default.Logger,
-					}})
+					},
+				})
 				assert.Equal(suite.T(), nil, err)
 				assert.Equal(suite.T(), gosnmp.SNMPError(0x0), result.Error)
 			})
 			suite.Run("OpaqueDouble", func() {
 				result, err := gosnmp.Default.Set([]gosnmp.SnmpPDU{
-					{Name: ".1.2.3.12",
+					{
+						Name:   ".1.2.3.12",
 						Type:   gosnmp.OpaqueDouble,
 						Value:  Asn1OpaqueDoubleWrap(123.11),
 						Logger: gosnmp.Default.Logger,
-					}})
+					},
+				})
 				assert.Equal(suite.T(), nil, err)
 				assert.Equal(suite.T(), gosnmp.SNMPError(0x0), result.Error)
 			})
 		})
-
 	})
 	suite.Run("SNMPBulkGet", func() {
 		result, err := getCmdOutput("snmpbulkwalk", "-v2c", "-c", "public", serverAddress.String(),

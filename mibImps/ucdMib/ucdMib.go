@@ -8,7 +8,7 @@ func init() {
 
 var g_Logger GoSNMPServer.ILogger
 
-//SetupLogger Setups Logger for this mib
+// SetupLogger Setups Logger for this mib
 func SetupLogger(i GoSNMPServer.ILogger) {
 	g_Logger = i
 }
@@ -21,5 +21,4 @@ func All() []*GoSNMPServer.PDUValueControlItem {
 	result = append(result, SystemLoadOIDs()...)
 	result = append(result, DiskUsageOIDs()...)
 	return result
-
 }

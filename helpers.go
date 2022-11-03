@@ -1,9 +1,12 @@
 package GoSNMPServer
 
-import "github.com/pkg/errors"
-import "github.com/slayercat/gosnmp"
-import "strings"
-import "strconv"
+import (
+	"strconv"
+	"strings"
+
+	"github.com/pkg/errors"
+	"github.com/slayercat/gosnmp"
+)
 
 func getPktContextOrCommunity(i *gosnmp.SnmpPacket) string {
 	if i.Version == gosnmp.Version3 {
@@ -31,7 +34,6 @@ func oidToByteString(oid string) string {
 			} else {
 				panic(errors.Errorf("oidToByteString not valid id. value=%v", oid))
 			}
-
 		}
 		i, err := strconv.ParseInt(each, 10, 32)
 		if err != nil {

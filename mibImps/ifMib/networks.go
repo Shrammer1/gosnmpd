@@ -1,17 +1,21 @@
 package ifMib
 
-import "fmt"
-import "io/ioutil"
-import "runtime"
-import "strings"
-import "encoding/hex"
-import "github.com/slayercat/gosnmp"
-import "github.com/slayercat/GoSNMPServer"
-import "github.com/shirou/gopsutil/net"
-import "github.com/pkg/errors"
+import (
+	"encoding/hex"
+	"fmt"
+	"io/ioutil"
+	"runtime"
+	"strings"
+
+	"github.com/pkg/errors"
+	"github.com/shirou/gopsutil/net"
+	"github.com/slayercat/GoSNMPServer"
+	"github.com/slayercat/gosnmp"
+)
 
 // NetworkOIDs Returns a list of network data.
-//   see http://www.net-snmp.org/docs/mibs/interfaces.html
+//
+//	see http://www.net-snmp.org/docs/mibs/interfaces.html
 func NetworkOIDs() []*GoSNMPServer.PDUValueControlItem {
 	toRet := []*GoSNMPServer.PDUValueControlItem{}
 	valInterfaces, err := net.Interfaces()
@@ -49,8 +53,8 @@ func NetworkOIDs() []*GoSNMPServer.PDUValueControlItem {
 				OID:  fmt.Sprintf("1.3.6.1.2.1.2.2.1.3.%d", ifIndex),
 				Type: gosnmp.Integer,
 				OnGet: func() (value interface{}, err error) {
-					var gigabitEthernet = 117 // see  http://www.net-snmp.org/docs/mibs/interfaces.html#IANAifType
-					//XXX: Let's assume all item is gigabitEthernet. /sys/class/net/eth0/type
+					gigabitEthernet := 117 // see  http://www.net-snmp.org/docs/mibs/interfaces.html#IANAifType
+					// XXX: Let's assume all item is gigabitEthernet. /sys/class/net/eth0/type
 					return GoSNMPServer.Asn1IntegerWrap(gigabitEthernet), nil
 				},
 				Document: "ifType",

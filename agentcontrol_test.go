@@ -1,8 +1,8 @@
 package GoSNMPServer
 
-import "testing"
-
 import (
+	"testing"
+
 	"github.com/slayercat/gosnmp"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
@@ -64,7 +64,6 @@ func (suite *ResponseForBufferTestSuite) TestSnmpv1GetRequest() {
 	var err error
 
 	responsebytes, err := suite.handle.ResponseForBuffer(buf)
-
 	if err != nil {
 		suite.T().Errorf("meet error: %+v", err)
 	}
@@ -72,7 +71,7 @@ func (suite *ResponseForBufferTestSuite) TestSnmpv1GetRequest() {
 		suite.T().Errorf("response shell not be nil")
 	}
 	suite.handle.Logger.Infof("Response done. try decode")
-	var handle = gosnmp.GoSNMP{}
+	handle := gosnmp.GoSNMP{}
 	handle.Logger = &SnmpLoggerAdapter{suite.handle.Logger}
 	response, err := handle.SnmpDecodePacket(responsebytes)
 	if err != nil || response == nil {
@@ -91,7 +90,6 @@ func (suite *ResponseForBufferTestSuite) TestSnmpv3HelloRequest() {
 	var err error
 
 	responsebytes, err := suite.handle.ResponseForBuffer(buf)
-
 	if err != nil {
 		suite.T().Errorf("meet error: %+v", err)
 	}
@@ -99,7 +97,7 @@ func (suite *ResponseForBufferTestSuite) TestSnmpv3HelloRequest() {
 		suite.T().Errorf("response shell not be nil")
 	}
 	suite.handle.Logger.Infof("Response done. try decode")
-	var handle = gosnmp.GoSNMP{}
+	handle := gosnmp.GoSNMP{}
 	handle.Logger = &SnmpLoggerAdapter{suite.handle.Logger}
 	response, err := handle.SnmpDecodePacket(responsebytes)
 	if err != nil || response == nil {
@@ -119,7 +117,6 @@ func (suite *ResponseForBufferTestSuite) TestSnmpv3EncryptedRequest() {
 	var err error
 
 	responsebytes, err := suite.handle.ResponseForBuffer(buf)
-
 	if err != nil {
 		suite.T().Errorf("meet error: %+v", err)
 	}
@@ -127,7 +124,7 @@ func (suite *ResponseForBufferTestSuite) TestSnmpv3EncryptedRequest() {
 		suite.T().Errorf("response shell not be nil")
 	}
 	suite.handle.Logger.Infof("Response done. try decode")
-	var handle = gosnmp.GoSNMP{
+	handle := gosnmp.GoSNMP{
 		SecurityParameters: &gosnmp.UsmSecurityParameters{
 			UserName:                 "pippo",
 			AuthenticationProtocol:   gosnmp.MD5,
@@ -159,7 +156,6 @@ func (suite *ResponseForBufferTestSuite) TestSnmpv3GetNextRequestInitial() {
 	var err error
 
 	responsebytes, err := suite.handle.ResponseForBuffer(buf)
-
 	if err != nil {
 		suite.T().Errorf("meet error: %+v", err)
 	}
@@ -167,7 +163,7 @@ func (suite *ResponseForBufferTestSuite) TestSnmpv3GetNextRequestInitial() {
 		suite.T().Errorf("response shell not be nil")
 	}
 	suite.handle.Logger.Infof("Response done. try decode")
-	var handle = gosnmp.GoSNMP{
+	handle := gosnmp.GoSNMP{
 		SecurityParameters: &gosnmp.UsmSecurityParameters{
 			UserName:                 "testuser",
 			AuthenticationProtocol:   gosnmp.MD5,
@@ -200,7 +196,6 @@ func (suite *ResponseForBufferTestSuite) TestSnmpv3GetNextRequestEndofMib() {
 	var err error
 
 	responsebytes, err := suite.handle.ResponseForBuffer(buf)
-
 	if err != nil {
 		suite.T().Errorf("meet error: %+v", err)
 	}
@@ -208,7 +203,7 @@ func (suite *ResponseForBufferTestSuite) TestSnmpv3GetNextRequestEndofMib() {
 		suite.T().Errorf("response shell not be nil")
 	}
 	suite.handle.Logger.Infof("Response done. try decode")
-	var handle = gosnmp.GoSNMP{
+	handle := gosnmp.GoSNMP{
 		SecurityParameters: &gosnmp.UsmSecurityParameters{
 			UserName:                 "testuser",
 			AuthenticationProtocol:   gosnmp.MD5,
@@ -241,7 +236,6 @@ func (suite *ResponseForBufferTestSuite) TestSnmpv3NotEncrypted() {
 	var err error
 
 	responsebytes, err := suite.handle.ResponseForBuffer(buf)
-
 	if err != nil {
 		suite.T().Errorf("meet error: %+v", err)
 	}
@@ -249,7 +243,7 @@ func (suite *ResponseForBufferTestSuite) TestSnmpv3NotEncrypted() {
 		suite.T().Errorf("response shell not be nil")
 	}
 	suite.handle.Logger.Infof("Response done. try decode")
-	var handle = gosnmp.GoSNMP{}
+	handle := gosnmp.GoSNMP{}
 	handle.Logger = &SnmpLoggerAdapter{suite.handle.Logger}
 	response, err := handle.SnmpDecodePacket(responsebytes)
 	if err != nil || response == nil {
@@ -305,7 +299,8 @@ func (suite *ResponseForBufferTestSuite) reqeustV1GetRequest() []byte {
 //         plaintext
 
 func (suite *ResponseForBufferTestSuite) snmpv3HelloRequest() []byte {
-	return []byte{0x30, 0x52, 0x02, 0x01, 0x03, 0x30, 0x11, 0x02,
+	return []byte{
+		0x30, 0x52, 0x02, 0x01, 0x03, 0x30, 0x11, 0x02,
 		0x04, 0x05, 0x6d, 0x2b, 0x82, 0x02, 0x03, 0x00,
 		0xff, 0xe3, 0x04, 0x01, 0x04, 0x02, 0x01, 0x03,
 		0x04, 0x10, 0x30, 0x0e, 0x04, 0x00, 0x02, 0x01,
@@ -315,7 +310,8 @@ func (suite *ResponseForBufferTestSuite) snmpv3HelloRequest() []byte {
 		0x6f, 0x72, 0x6d, 0x61, 0x74, 0x73, 0x2f, 0x6c,
 		0x69, 0x6e, 0x75, 0x78, 0xa0, 0x0e, 0x02, 0x04,
 		0x44, 0xfa, 0x16, 0xe1, 0x02, 0x01, 0x00, 0x02,
-		0x01, 0x00, 0x30, 0x00}
+		0x01, 0x00, 0x30, 0x00,
+	}
 }
 
 // Simple Network Management Protocol
@@ -367,9 +363,10 @@ func (suite *ResponseForBufferTestSuite) snmpv3HelloRequest() []byte {
 //                 [Response In: 4]
 
 func (suite *ResponseForBufferTestSuite) snmpv3Encrypted() []byte {
-	//the authPassword for all users is pippoxxx and the privPassword is PIPPOxxx.
-	//pippo uses MD5 and DES
-	return []byte{0x30, 0x81, 0xb1, 0x02, 0x01, 0x03, 0x30, 0x11,
+	// the authPassword for all users is pippoxxx and the privPassword is PIPPOxxx.
+	// pippo uses MD5 and DES
+	return []byte{
+		0x30, 0x81, 0xb1, 0x02, 0x01, 0x03, 0x30, 0x11,
 		0x02, 0x04, 0x30, 0xf6, 0xf3, 0xd5, 0x02, 0x03,
 		0x00, 0xff, 0xe3, 0x04, 0x01, 0x07, 0x02, 0x01,
 		0x03, 0x04, 0x37, 0x30, 0x35, 0x04, 0x0d, 0x80,
@@ -391,7 +388,8 @@ func (suite *ResponseForBufferTestSuite) snmpv3Encrypted() []byte {
 		0x1d, 0x88, 0xca, 0x20, 0xee, 0xef, 0x4e, 0x6b,
 		0xf0, 0x67, 0x84, 0xc6, 0x7c, 0x15, 0xf1, 0x44,
 		0x91, 0x5d, 0x9b, 0xc2, 0xc6, 0xa0, 0x46, 0x1d,
-		0xa9, 0x2a, 0x4a, 0xbe}
+		0xa9, 0x2a, 0x4a, 0xbe,
+	}
 }
 
 // Simple Network Management Protocol

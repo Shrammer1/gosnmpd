@@ -1,7 +1,10 @@
 package GoSNMPServer
 
-import "net"
-import "github.com/pkg/errors"
+import (
+	"net"
+
+	"github.com/pkg/errors"
+)
 
 type ISnmpServerListener interface {
 	SetupLogger(ILogger)
@@ -38,6 +41,7 @@ func NewUDPListener(l3proto, address string) (ISnmpServerListener, error) {
 func (udp *UDPListener) SetupLogger(i ILogger) {
 	udp.logger = i
 }
+
 func (udp *UDPListener) Address() net.Addr {
 	return udp.conn.LocalAddr()
 }

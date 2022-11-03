@@ -86,3 +86,86 @@ Could use wrap function for detect type error. See `GoSNMPServer.Asn1IntegerWrap
 Thanks
 -----
 This library is based on **[soniah/gosnmp](https://github.com/soniah/gosnmp)** for encoder / decoders. (made a [fork](https://github.com/slayercat/gosnmp) for maintenance)
+
+
+## logs
+
+```log
+$ snmpwalk -v 3 -l authPriv  -n public -u testuser -a md5 -A testauth -x des -X testpriv 127.0.0.1:1161 1
+DISMAN-EVENT-MIB::sysUpTimeInstance = Timeticks: (4424282) 12:17:22.82
+IF-MIB::ifIndex.0 = INTEGER: 1
+IF-MIB::ifIndex.1 = INTEGER: 1
+IF-MIB::ifDescr.0 = STRING: eth0
+IF-MIB::ifDescr.1 = STRING: lo
+IF-MIB::ifType.0 = INTEGER: gigabitEthernet(117)
+IF-MIB::ifType.1 = INTEGER: gigabitEthernet(117)
+IF-MIB::ifPhysAddress.0 = STRING: 52:54:0:c6:32:4a
+IF-MIB::ifPhysAddress.1 = STRING:
+IF-MIB::ifAdminStatus.0 = INTEGER: up(1)
+IF-MIB::ifAdminStatus.1 = INTEGER: up(1)
+IF-MIB::ifOperStatus.0 = INTEGER: 0
+IF-MIB::ifOperStatus.1 = INTEGER: 0
+IF-MIB::ifInOctets.0 = Counter32: 4131263897
+IF-MIB::ifInOctets.1 = Counter32: 253267255
+IF-MIB::ifInUcastPkts.0 = Counter32: 21906941
+IF-MIB::ifInUcastPkts.1 = Counter32: 223426
+IF-MIB::ifInDiscards.0 = Counter32: 0
+IF-MIB::ifInDiscards.1 = Counter32: 0
+IF-MIB::ifInErrors.0 = Counter32: 0
+IF-MIB::ifInErrors.1 = Counter32: 0
+IF-MIB::ifOutOctets.0 = Counter32: 4039169924
+IF-MIB::ifOutOctets.1 = Counter32: 253270719
+IF-MIB::ifOutUcastPkts.0 = Counter32: 20826025
+IF-MIB::ifOutUcastPkts.1 = Counter32: 223442
+IF-MIB::ifOutDiscards.0 = Counter32: 0
+IF-MIB::ifOutDiscards.1 = Counter32: 0
+IF-MIB::ifOutErrors.0 = Counter32: 0
+IF-MIB::ifOutErrors.1 = Counter32: 0
+UCD-SNMP-MIB::memIndex = INTEGER: 1
+UCD-SNMP-MIB::memErrorName = STRING: swap
+UCD-SNMP-MIB::memTotalSwap = INTEGER: 0 kB
+UCD-SNMP-MIB::memAvailSwap = INTEGER: 0 kB
+UCD-SNMP-MIB::memTotalReal = INTEGER: 3825904 kB
+UCD-SNMP-MIB::memAvailReal = INTEGER: 3127956 kB
+UCD-SNMP-MIB::memTotalFree = INTEGER: 3127956 kB
+UCD-SNMP-MIB::memMinimumSwap = INTEGER: 0 kB
+UCD-SNMP-MIB::memBuffer = INTEGER: 120368 kB
+UCD-SNMP-MIB::memCached = INTEGER: 2905776 kB
+UCD-SNMP-MIB::memSwapError = INTEGER: noError(0)
+UCD-SNMP-MIB::memSwapErrorMsg = STRING:
+UCD-SNMP-MIB::dskIndex.1 = INTEGER: 1
+UCD-SNMP-MIB::dskPath.1 = STRING: /
+UCD-SNMP-MIB::dskDevice.1 = STRING: /
+UCD-SNMP-MIB::dskTotal.1 = INTEGER: 80569
+UCD-SNMP-MIB::dskAvail.1 = INTEGER: 39830
+UCD-SNMP-MIB::dskUsed.1 = INTEGER: 37364
+UCD-SNMP-MIB::dskPercent.1 = INTEGER: 48
+UCD-SNMP-MIB::laIndex.1 = INTEGER: 1
+UCD-SNMP-MIB::laIndex.2 = INTEGER: 2
+UCD-SNMP-MIB::laIndex.3 = INTEGER: 3
+UCD-SNMP-MIB::laNames.1 = STRING: Load-1
+UCD-SNMP-MIB::laNames.2 = STRING: Load-5
+UCD-SNMP-MIB::laNames.3 = STRING: Load-15
+UCD-SNMP-MIB::laLoad.1 = STRING: 0.06
+UCD-SNMP-MIB::laLoad.2 = STRING: 0.06
+UCD-SNMP-MIB::laLoad.3 = STRING: 0.06
+UCD-SNMP-MIB::laLoadInt.1 = INTEGER: 0
+UCD-SNMP-MIB::laLoadInt.2 = INTEGER: 0
+UCD-SNMP-MIB::laLoadInt.3 = INTEGER: 0
+UCD-SNMP-MIB::ssIndex = INTEGER: 0
+UCD-SNMP-MIB::ssErrorName = STRING: systemStats
+UCD-SNMP-MIB::ssCpuRawUser = Counter32: 22914
+UCD-SNMP-MIB::ssCpuRawNice = Counter32: 617
+UCD-SNMP-MIB::ssCpuRawSystem = Counter32: 20236
+UCD-SNMP-MIB::ssCpuRawIdle = Counter32: 17639225
+UCD-SNMP-MIB::ssCpuRawWait = Counter32: 3168
+UCD-SNMP-MIB::ssCpuRawInterrupt = Counter32: 0
+UCD-SNMP-MIB::ssIORawSent = Counter32: 26507807
+UCD-SNMP-MIB::ssIORawReceived = Counter32: 575525
+UCD-SNMP-MIB::ssRawInterrupts = Counter32: 1080137212
+UCD-SNMP-MIB::ssRawContexts = Counter32: 1546886557
+UCD-SNMP-MIB::ssCpuRawSoftIRQ = Counter32: 537
+UCD-SNMP-MIB::ssCpuRawSteal = Counter32: 0
+UCD-SNMP-MIB::ssCpuRawGuest = Counter32: 0
+UCD-SNMP-MIB::ssCpuRawGuest = No more variables left in this MIB View (It is past the end of the MIB tree)
+```

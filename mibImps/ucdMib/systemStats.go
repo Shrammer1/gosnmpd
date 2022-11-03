@@ -1,13 +1,16 @@
 package ucdMib
 
-import "github.com/slayercat/gosnmp"
-import "github.com/slayercat/GoSNMPServer"
-import "github.com/shirou/gopsutil/cpu"
-import "github.com/shirou/gopsutil/disk"
-import "github.com/prometheus/procfs"
+import (
+	"github.com/prometheus/procfs"
+	"github.com/shirou/gopsutil/cpu"
+	"github.com/shirou/gopsutil/disk"
+	"github.com/slayercat/GoSNMPServer"
+	"github.com/slayercat/gosnmp"
+)
 
 // SystemStatsOIDs Returns a list of memory operation.
-//   see http://www.net-snmp.org/docs/mibs/ucdavis.html#DisplayString
+//
+//	see http://www.net-snmp.org/docs/mibs/ucdavis.html#DisplayString
 func SystemStatsOIDs() []*GoSNMPServer.PDUValueControlItem {
 	toRet := []*GoSNMPServer.PDUValueControlItem{
 		{
@@ -167,6 +170,7 @@ func SystemStatsOIDs() []*GoSNMPServer.PDUValueControlItem {
 	appendLinuxPlatformSystemStats(&toRet)
 	return toRet
 }
+
 func appendLinuxPlatformSystemStats(io *[]*GoSNMPServer.PDUValueControlItem) {
 	procfsInt, err := procfs.NewDefaultFS()
 	if err != nil {

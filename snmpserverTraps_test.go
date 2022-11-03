@@ -26,7 +26,7 @@ func (suite *TrapTests) SetupTest() {
 
 func (suite *TrapTests) TestTraps() {
 	var trapDataReceived gosnmp.SnmpPDU
-	var waiterReadyToWork = make(chan int, 1)
+	waiterReadyToWork := make(chan int, 1)
 	master := MasterAgent{
 		Logger: suite.Logger,
 		SecurityConfig: SecurityConfig{
@@ -46,17 +46,15 @@ func (suite *TrapTests) TestTraps() {
 			{
 				CommunityIDs: []string{"public"},
 				OIDs: []*PDUValueControlItem{
-
 					{
 						OID:  "1.2.4.1",
 						Type: gosnmp.OctetString,
 						OnTrap: func(isInform bool, trapdata gosnmp.SnmpPDU) (dataret interface{}, err error) {
-
 							trapDataReceived = trapdata
 							dataret = nil
 							err = nil
 							if isInform {
-								//return something
+								// return something
 								dataret = Asn1OctetStringWrap("testInformReturn")
 							}
 							waiterReadyToWork <- 1
@@ -70,7 +68,7 @@ func (suite *TrapTests) TestTraps() {
 	}
 	shandle := NewSNMPServer(master)
 	shandle.ListenUDP("udp4", ":0")
-	var stopWaitChain = make(chan int)
+	stopWaitChain := make(chan int)
 	go func() {
 		err := shandle.ServeForever()
 		if err != nil {
@@ -79,7 +77,6 @@ func (suite *TrapTests) TestTraps() {
 			suite.Logger.Info("ServeForever Stoped.")
 		}
 		stopWaitChain <- 1
-
 	}()
 	serverAddress := shandle.Address().(*net.UDPAddr)
 	suite.Run("Trapv2OctetString", func() {
@@ -132,7 +129,6 @@ func (suite *TrapTests) TestTraps() {
 		assert.Equal(suite.T(), "1.2.3.13", data)
 	})
 	suite.Run("Trap V3", func() {
-
 		// refer: https://github.com/soniah/gosnmp/issues/145
 		client := &gosnmp.GoSNMP{
 			Target:        "127.0.0.1",
@@ -141,7 +137,7 @@ func (suite *TrapTests) TestTraps() {
 			Timeout:       time.Duration(30) * time.Second,
 			SecurityModel: gosnmp.UserSecurityModel,
 			MsgFlags:      gosnmp.AuthPriv,
-			//ContextName:   "public", //MUST have
+			// ContextName:   "public", //MUST have
 			Logger: &SnmpLoggerAdapter{suite.Logger},
 			SecurityParameters: &gosnmp.UsmSecurityParameters{
 				UserName:                 "user",
@@ -160,7 +156,7 @@ func (suite *TrapTests) TestTraps() {
 
 		trap := gosnmp.SnmpTrap{
 			Variables: []gosnmp.SnmpPDU{
-				gosnmp.SnmpPDU{
+				{
 					Name:  ".1.2.4.1",
 					Type:  gosnmp.OctetString,
 					Value: ".1.3.6.1.6.3.1.1.5.1",
@@ -179,7 +175,7 @@ func (suite *TrapTests) TestTraps() {
 }
 
 func (suite *TrapTests) TestErrorTraps() {
-	var waiterReadyToWork = make(chan int, 1)
+	waiterReadyToWork := make(chan int, 1)
 	master := MasterAgent{
 		Logger: suite.Logger,
 		SecurityConfig: SecurityConfig{
@@ -190,7 +186,6 @@ func (suite *TrapTests) TestErrorTraps() {
 			{
 				CommunityIDs: []string{"public"},
 				OIDs: []*PDUValueControlItem{
-
 					{
 						OID:  "1.2.4.1",
 						Type: gosnmp.OctetString,
@@ -228,7 +223,7 @@ func (suite *TrapTests) TestErrorTraps() {
 	}
 	shandle := NewSNMPServer(master)
 	shandle.ListenUDP("udp4", ":0")
-	var stopWaitChain = make(chan int)
+	stopWaitChain := make(chan int)
 	go func() {
 		err := shandle.ServeForever()
 		if err != nil {
@@ -237,7 +232,6 @@ func (suite *TrapTests) TestErrorTraps() {
 			suite.Logger.Info("ServeForever Stoped.")
 		}
 		stopWaitChain <- 1
-
 	}()
 	serverAddress := shandle.Address().(*net.UDPAddr)
 	suite.Run("TestFail", func() {
@@ -251,7 +245,6 @@ func (suite *TrapTests) TestErrorTraps() {
 		assert.Equal(suite.T(), 1, rr)
 	})
 	suite.Run("TestPermission", func() {
-
 		result, err := getCmdOutput("snmptrap", "-v2c", "-c", "public", serverAddress.String(),
 			"", "1.2.4.2", "1.2.4.2", "s", "1.2.3.13")
 		if err != nil {

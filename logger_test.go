@@ -25,5 +25,4 @@ func TestDiscardLogger(t *testing.T) {
 	target.Warningf("")
 	target.Warningln("")
 	target.Warnln("")
-
 }

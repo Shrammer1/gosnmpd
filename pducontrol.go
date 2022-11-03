@@ -16,19 +16,21 @@ const PermissionAllowanceAllowed PermissionAllowance = 0
 // PermissionAllowanceDenied denies for access
 const PermissionAllowanceDenied PermissionAllowance = 1
 
-//FuncPDUControlCheckPermission checks for permission.
-//   return PermissionAllowanceAllowed / PermissionAllowanceDenied
+// FuncPDUControlCheckPermission checks for permission.
+//
+//	return PermissionAllowanceAllowed / PermissionAllowanceDenied
 type FuncPDUControlCheckPermission func(pktVersion gosnmp.SnmpVersion, pduType gosnmp.PDUType, contextName string) PermissionAllowance
 
-//FuncPDUControlTrap will be called on trap.
-//    args:
-//		isInform: indicate if the request is a InformRequest.
-//          true  -- It's a InformRequest. data will be returns to the client
-//			false -- It's a trap.  data to returned will drop silencely.
-// 		trapdata: what client asks for.
-//    returns:
-//		dataret -- try to return to client. nil for nothing to return
-//		err  --  any error?(will return to client by string)
+// FuncPDUControlTrap will be called on trap.
+//
+//	   args:
+//			isInform: indicate if the request is a InformRequest.
+//	         true  -- It's a InformRequest. data will be returns to the client
+//				false -- It's a trap.  data to returned will drop silencely.
+//			trapdata: what client asks for.
+//	   returns:
+//			dataret -- try to return to client. nil for nothing to return
+//			err  --  any error?(will return to client by string)
 type FuncPDUControlTrap func(isInform bool, trapdata gosnmp.SnmpPDU) (dataret interface{}, err error)
 
 // FuncPDUControlGet will be called on get value
@@ -64,7 +66,7 @@ type PDUValueControlItem struct {
 	OnTrap FuncPDUControlTrap
 	//////////// For human document
 
-	//Document for this PDU Item. ignored by the program.
+	// Document for this PDU Item. ignored by the program.
 	Document string
 }
 
@@ -91,6 +93,7 @@ func Asn1IPAddressUnwrap(i interface{}) net.IP {
 	}
 	return ip
 }
+
 func Asn1IPAddressWrap(i net.IP) interface{} {
 	return i
 }
