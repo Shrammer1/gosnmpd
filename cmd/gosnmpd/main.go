@@ -11,12 +11,12 @@ import "github.com/urfave/cli/v2"
 
 func makeApp() *cli.App {
 	return &cli.App{
-		Name:        "gosnmpserver",
+		Name:        "gosnmpd",
 		Description: "an example server of gosnmp",
 		Commands: []*cli.Command{
 			{
-				Name:    "RunServer",
-				Aliases: []string{"run-server"},
+				Name:  "run",
+				Usage: "run-server",
 				Flags: []cli.Flag{
 					&cli.StringFlag{Name: "logLevel", Value: "info"},
 					&cli.StringFlag{Name: "community", Value: "public"},
