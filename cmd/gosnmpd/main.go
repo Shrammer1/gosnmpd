@@ -1,9 +1,13 @@
 package main
 
 import (
+	"fmt"
+	"os"
 	"reflect"
 	"strings"
 
+	"github.com/bingoohuang/gg/pkg/v"
+	"github.com/bingoohuang/godaemon"
 	"github.com/bingoohuang/gosnmpd"
 	"github.com/bingoohuang/gosnmpd/mibImps"
 	"github.com/sirupsen/logrus"
@@ -12,6 +16,8 @@ import (
 )
 
 type App struct {
+	Version      bool   `flag:"version,v" value:"false" usage:"print version and exit"`
+	Deamon       bool   `flag:"deamon,d" value:"false" usage:"run as daemon"`
 	LogLevel     string `flag:"logLevel,l" value:"info"`
 	Community    string `flag:"community,c" value:"public"`
 	BindTo       string `flag:"bindTo" value:":1161"`
@@ -26,6 +32,18 @@ func main() {
 	var app App
 	declareFlags(&app)
 	pflag.Parse()
+
+	if app.Version {
+		fmt.Println(v.Version())
+		os.Exit(0)
+	}
+
+	if app.Deamon {
+		if p, _ := new(godaemon.Context).Reborn(); p != nil {
+			os.Exit(0)
+		}
+	}
+
 	app.runServer()
 }
 
@@ -160,7 +178,10 @@ func declareFlags(app *App) {
 		usage := ft.Tag.Get("usage")
 		value := ft.Tag.Get("value")
 
-		if ft.Type.Kind() == reflect.String {
+		switch ft.Type.Kind() {
+		case reflect.Bool:
+			pflag.BoolVarP(fv.(*bool), flag, short, "true" == value, usage)
+		case reflect.String:
 			pflag.StringVarP(fv.(*string), flag, short, value, usage)
 		}
 	}
