@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/bingoohuang/gg v0.0.0-20221026080853-15f28e45405e
-	github.com/bingoohuang/godaemon v0.0.0-20221104023727-c163933993a2
+	github.com/bingoohuang/godaemon v0.0.0-20221104024058-3bf8b9130635
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/procfs v0.8.0
 	github.com/shirou/gopsutil v3.21.11+incompatible

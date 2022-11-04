@@ -17,7 +17,7 @@ import (
 
 type App struct {
 	Version      bool   `flag:"version,v" value:"false" usage:"print version and exit"`
-	Deamon       bool   `flag:"deamon,d" value:"false" usage:"run as daemon"`
+	Daemon       bool   `flag:"daemon,d" value:"false" usage:"run as daemon"`
 	LogLevel     string `flag:"logLevel,l" value:"info"`
 	Community    string `flag:"community,c" value:"public"`
 	BindTo       string `flag:"bindTo" value:":1161"`
@@ -38,7 +38,7 @@ func main() {
 		os.Exit(0)
 	}
 
-	godaemon.Deamonize(app.Deamon)
+	godaemon.Daemonize(app.Daemon)
 
 	app.runServer()
 }
