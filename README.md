@@ -91,11 +91,16 @@ This library is based on **[soniah/gosnmp](https://github.com/soniah/gosnmp)** f
 ```log
 $ gosnmpd
 $ snmpwalk -v 3 -l authNoPriv  -n public -u testuser -a md5 -A testauth 127.0.0.1:1161 1
+$ snmp -t 127.0.0.1:1161 -userName testuser -authPassword testauth -o 1.3.6.1.4.1.2021.y -y=4.5 -y=4.6 -o 1.3.6.1.4.1.2021.9.1.z.1 -z=7-8
+[get][0][UCD-SNMP-MIB::memTotalReal][.1.3.6.1.4.1.2021.4.5] => Integer: 16777216
+[get][1][UCD-SNMP-MIB::memAvailReal][.1.3.6.1.4.1.2021.4.6] => Integer: 6013352
+[get][2][UCD-SNMP-MIB::dskAvail.1][.1.3.6.1.4.1.2021.9.1.7.1] => Integer: 17481
+[get][3][UCD-SNMP-MIB::dskUsed.1][.1.3.6.1.4.1.2021.9.1.8.1] => Integer: 221590
 ```
 
 ```log
 $ gosnmpd -x des -X testpriv
-$ snmpwalk -v 3 -l authPriv  -n public -u testuser -a md5 -A testauth -x des -X testpriv 127.0.0.1:1161 1
+$ snmpwalk -v 3 -l authPriv -n public -u testuser -a md5 -A testauth -x des -X testpriv 127.0.0.1:1161 1
 DISMAN-EVENT-MIB::sysUpTimeInstance = Timeticks: (4424282) 12:17:22.82
 IF-MIB::ifIndex.0 = INTEGER: 1
 IF-MIB::ifIndex.1 = INTEGER: 1
