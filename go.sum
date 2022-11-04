@@ -1,7 +1,7 @@
 github.com/bingoohuang/gg v0.0.0-20221026080853-15f28e45405e h1:eDzaJabDHtxkiA00PgdXs/vUuHhprmbkJpkzf5q+QlQ=
 github.com/bingoohuang/gg v0.0.0-20221026080853-15f28e45405e/go.mod h1:roJoHVrCa7ya41FNcJgIAS9hlh24M858aEjQUmcscZE=
-github.com/bingoohuang/godaemon v0.0.0-20220907040433-7f208f406639 h1:QL1AI8AFUhhchCZi1DtfEQT8zDfuuufDnyC+amJNNtc=
-github.com/bingoohuang/godaemon v0.0.0-20220907040433-7f208f406639/go.mod h1:xfxElNPL0/tWWnqq1Iq1W1N1lnG8032nJ5X/JhDdOwU=
+github.com/bingoohuang/godaemon v0.0.0-20221104023727-c163933993a2 h1:WBHTM2/ergNVgJsAq4GvL9aRViBL53r1WtW+xb1G/8w=
+github.com/bingoohuang/godaemon v0.0.0-20221104023727-c163933993a2/go.mod h1:xfxElNPL0/tWWnqq1Iq1W1N1lnG8032nJ5X/JhDdOwU=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

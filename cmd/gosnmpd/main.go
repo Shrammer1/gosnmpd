@@ -38,11 +38,7 @@ func main() {
 		os.Exit(0)
 	}
 
-	if app.Deamon {
-		if p, _ := new(godaemon.Context).Reborn(); p != nil {
-			os.Exit(0)
-		}
-	}
+	godaemon.Deamonize(app.Deamon)
 
 	app.runServer()
 }
