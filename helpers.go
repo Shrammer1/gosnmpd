@@ -35,7 +35,7 @@ func oidToByteString(oid string) string {
 				panic(errors.Errorf("oidToByteString not valid id. value=%v", oid))
 			}
 		}
-		i, err := strconv.ParseInt(each, 10, 32)
+		i, err := strconv.ParseUint(each, 10, 32)
 		if err != nil {
 			panic(err)
 		}
