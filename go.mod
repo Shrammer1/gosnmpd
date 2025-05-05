@@ -1,4 +1,4 @@
-module github.com/bingoohuang/gosnmpd
+module github.com/Shrammer1/gosnmpd
 
 go 1.19
 
